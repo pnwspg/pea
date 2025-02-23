@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Line Form</title>
+    <script src="https://static.line-scdn.net/liff/2.1/sdk.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #0078FF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>กรอกข้อมูลของคุณ</h2>
+    <form id="userForm">
+        <label for="name">ชื่อของคุณ:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+        <button type="submit">ส่งข้อมูล</button>
+    </form>
+
+    <script>
+        window.onload = function () {
+            liff.init({ liffId: 'Ud598694db3829c446a17c04e3de8f4a9' }) // Replace 'YOUR_LIFF_ID' with your LIFF ID
+                .then(() => {
+                    document.getElementById("userForm").addEventListener("submit", function (e) {
+                        e.preventDefault();
+                        let name = document.getElementById("name").value;
+
+                        // Send data to Line chat
+                        liff.sendMessages([{
+                            type: 'text',
+                            text: `สวัสดี ${name}, ขอบคุณที่กรอกข้อมูล!`
+                        }])
+                        .then(() => {
+                            alert("ส่งข้อมูลเรียบร้อยแล้ว!");
+                        })
+                        .catch((err) => {
+                            alert("เกิดข้อผิดพลาด: " + err);
+                        });
+                    });
+                })
+                .catch((err) => {
+                    alert("ไม่สามารถโหลด LIFF ได้: " + err);
+                });
+        };
+    </script>
+</body>
+</html>
